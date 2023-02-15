@@ -13,8 +13,6 @@ vtex_apptoken="${VTEX_APPTOKEN}"
 
 mkdir -p $vtex_path
 
-echo "fetch vtex token"
-
 token_curl=$(curl -s --location --request POST "https://vtexid.vtex.com.br/api/vtexid/apptoken/login?an=$vtex_account" \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -23,7 +21,7 @@ token_curl=$(curl -s --location --request POST "https://vtexid.vtex.com.br/api/v
 }') || exit
 
 response=$(jq ".account = \"$vtex_account\"" <<<"$token_curl")
-jq ".login = \"$vtex_appkey\"" <<<"$resonse" > "$vtex_path$session_file"
+jq ".login = \"$vtex_appkey\"" <<<"$response" > "$vtex_path$session_file"
 
 token=$(printf '%s\n' "$response" | jq -r .token)
 
